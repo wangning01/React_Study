@@ -1,0 +1,3 @@
+class AxiosResponse{
+    constructor(status)
+}
