@@ -2,14 +2,14 @@ import React, { useContext, useState } from 'react';
 import { AuthContext } from '../../context/AuthContext';
 import ConfirmationModal from '../modal/ConfirmationModal'
 import {useFormik} from 'formik';
+import { useTranslation } from 'react-i18next';
 
 
 const RegisterForm = () => {
     const { register } = useContext(AuthContext);
-    // const [email, setEmail] = useState('');
-    // const [password, setPassword] = useState('');
     const [showModal, setShowModal] = useState(false);
     const [modalMessage, setModalMessage] = useState("");
+    const { t, i18n } = useTranslation();
 
     const validate = (values) => {
       const errors = {};
@@ -26,8 +26,6 @@ const RegisterForm = () => {
       return errors;
     };
     const handleSubmit = async (values) => {
-      //e.preventDefault();
-      // const regResponse = await register(formik.values.email, formik.values.password);
       const regResponse = await register(values.email, values.password);
       if('isAxiosError' in regResponse){
         console.error('register failed.');
@@ -43,8 +41,6 @@ const RegisterForm = () => {
         setShowModal(true);
         setModalMessage('User registration successful!');
       }
-      // setEmail('');
-      // setPassword('');
       formik.values.email='';
       formik.values.password='';
     };
@@ -71,8 +67,8 @@ const RegisterForm = () => {
           <table>
             <tbody>
             <tr>
-              <td><input type="email" name="email" value={formik.values.email} onChange={formik.handleChange} onBlur={formik.handleBlur}  placeholder='Enter email to register' /></td>
-              <td><input type="password" name='password' value={formik.values.password} onChange={formik.handleChange} onBlur={formik.handleBlur}  placeholder='password' /></td>
+              <td><input type="email" name="email" value={formik.values.email} onChange={formik.handleChange} onBlur={formik.handleBlur}  placeholder={t('label.enterEmailToRegister')} /></td>
+              <td><input type="password" name='password' value={formik.values.password} onChange={formik.handleChange} onBlur={formik.handleBlur}  placeholder={t('label.enterPassword')} /></td>
               <td><button type="submit">Register</button></td>
             </tr>
             <tr>
