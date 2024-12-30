@@ -25,32 +25,32 @@ const RegisterForm = () => {
       }
       return errors;
     };
-    const handleSubmit = async (values) => {
-      const regResponse = await register(values.email, values.password);
-      if('isAxiosError' in regResponse){
-        console.error('register failed.');
-        if(regResponse.response){
-          console.error('status code: '+regResponse.response.status);
-          console.error('response data: '+regResponse.response.data);
-          setShowModal(true);
-          setModalMessage(regResponse.message);
-        }
-      }else if('status' in regResponse){
-        console.log('status code: '+regResponse.status);
-        console.log('response data: '+regResponse.data);
-        setShowModal(true);
-        setModalMessage('User registration successful!');
-      }
-      formik.values.email='';
-      formik.values.password='';
-    };
 
     const formik = useFormik(
       {initialValues: {email:"", password:""},
         validate,
-        onSubmit: (values) => {
+        onSubmit: async (values) => {
           console.log(values);
-          handleSubmit(values);
+          try{
+            const response = await register(values.email, values.password);
+            console.log('status code: '+response.status);
+            console.log('response data: '+response.data);
+            setShowModal(true);
+            setModalMessage('User registration successful!');
+          }catch(error){
+              console.error('register failed.');
+              if(error.response){
+                console.error('status code: '+error.response.status);
+                console.error('response data: '+error.response.data);
+                setShowModal(true);
+                setModalMessage(error.response.data);
+              }else{
+                setShowModal(true);
+                setModalMessage(error);
+              }
+          }
+          formik.values.email='';
+          formik.values.password='';
         },
      }
     );
@@ -58,7 +58,8 @@ const RegisterForm = () => {
   
     const handleClose = (e) => {
       setShowModal(false);
-    }
+    };
+
 
     return (
       <div>
@@ -69,7 +70,7 @@ const RegisterForm = () => {
             <tr>
               <td><input type="email" name="email" value={formik.values.email} onChange={formik.handleChange} onBlur={formik.handleBlur}  placeholder={t('label.enterEmailToRegister')} /></td>
               <td><input type="password" name='password' value={formik.values.password} onChange={formik.handleChange} onBlur={formik.handleBlur}  placeholder={t('label.enterPassword')} /></td>
-              <td><button type="submit">Register</button></td>
+              <td><button type="submit">{t('label.register')}</button></td>
             </tr>
             <tr>
               <td>{formik.touched.email && formik.errors.email ? (<p style={{color: 'red'}}>{formik.errors.email}</p>) : null}</td>

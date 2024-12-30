@@ -1,4 +1,13 @@
 {
     "label.enterEmailToRegister": "Enter email to register",
-    "label.enterPassword": "Enter password"
+    "label.enterPassword": "Enter password",
+    "label.email": "Email",
+    "label.password": "Password",
+    "label.register": "Register",
+    "label.login": "Login",
+    "error.required": "Required",
+    "error.atLeast5chars": "'At least 5 characters",
+    "error.invalidEmailAddress": "Invalid email address",
+    "error.register.required": "register failed",
+    "message.user.registration.successful": "User registration successful!"
 }

@@ -22,13 +22,8 @@ export const AuthProvider = ({ children }) => {
 
   
   const register = async (email, password) => {
-    let regResponse;
     console.log('in method register');
-    await axiosClient
-      .post('/api/register', { email, password })
-      .then((response) => {regResponse = response;})
-      .catch((error) => {regResponse = error;});
-    return regResponse;
+    return await axiosClient.post('/api/register', { email, password });
   };
 
   const logout = () => {
